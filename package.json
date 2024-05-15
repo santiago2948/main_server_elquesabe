@@ -1,0 +1,29 @@
+{
+  "name": "pruebas-env",
+  "version": "1.0.0",
+  "description": "requeriments: \r To execute this code you must have benn installed the next tecnologies:\r - node js\r - mysql\r instructions to development:\r befor execute this code you should run these next comand in your comand line, you should open the dbmySql.txt file and copy all the scripth saved in it, after that open your mysql workbrench or comand line and paste all that script that you have copied to create the sql database that you´re gonna need tho execute this project.\r after that you will have to fallow these next instruccions:\r 1. change files's name to .env-change to .env.\r 2. change data in the variables:\r   DB_HOST=localhost\r   DB_USER=myuser\r DB_PASS=mypassword\r DATABASE=\"el_que_sabe\"\r PORT=port_to_use\r to your database own data in the .env file.\r 3. open two terminals into the root folder were you copied the project.\r 4. in the first terminal run \"npm install\" after that execute \"npm start\".\r 5. in the second terminal run:\r  - cd views\r  - npm install\r  - npm start",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "chats": "nodemon server/indexChat.js",
+    "migrations": "npx knex migrate:latest --env development"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "buffer": "^6.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.4",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.1",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
+    "resend": "^3.2.0",
+    "sharp": "^0.33.2"
+  }
+}

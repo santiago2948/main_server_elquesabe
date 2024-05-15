@@ -1,0 +1,22 @@
+requeriments: 
+To execute this code you must have benn installed the next tecnologies:
+- node js
+- mysql
+instructions to development:
+befor execute this code you should run these next comand in your comand line, you should open the dbmySql.txt file and copy all the scripth saved in it, after that open your mysql workbrench or comand line and paste all that script that you have copied to create the sql database that you´re gonna need tho execute this project.
+after that you will have to fallow these next instruccions:
+1. change files's name to .env-change to .env.
+2. change data in the variables:
+  DB_HOST=localhost
+  DB_USER=myuser
+DB_PASS=mypassword
+DATABASE="el_que_sabe"
+PORT=port_to_use
+to your database own data in the .env file.
+3. open two terminals into the root folder were you copied the project.
+4. in the first terminal run "npm install" after that execute "npm start".
+5. in the second terminal run:
+ - cd views
+ - npm install
+ - npm start
+
