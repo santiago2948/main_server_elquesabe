@@ -11,6 +11,7 @@ exports.createRanking = (req, res, next)=>{
 exports.averageRanking = (req, res, next)=>{
     const id = req.body.id
     ReviewDAO.averageRank(id, (result)=>{
+        if(result.data===null) result["data"]=5;
         res.json(result)
     })
 };

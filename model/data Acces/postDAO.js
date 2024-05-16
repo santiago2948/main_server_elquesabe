@@ -16,7 +16,7 @@ class PostDAO{
     let link= post.img;
     let fileContent=null;
     try {
-        if (link !== null) {
+        if (link) {
           fileContent = await sharp(link)
             .resize({ width: 800 })
             .jpeg({ quality: 80 })

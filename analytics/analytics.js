@@ -3,7 +3,7 @@ const {
   Chart,
   LinearScale,
   BarController,
-  CategoryScale,
+  CategoryScale, 
   BarElement,
 } = require("chart.js");
 
