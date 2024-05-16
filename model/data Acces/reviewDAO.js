@@ -24,7 +24,8 @@ class ReviewDAO {
         try{
             let res = await mysqlExecute(sql, [id]);
             const promedio = res[0].Promedio_Ranking;
-            cb({result: true, data: promedio.toFixed(2)});
+            if(promedio) promedio.toFixed(1);
+            cb({result: true, data: promedio});
         }catch(error){
             console.error("Error al hacer la consulta", error)
             cb({result: false})
