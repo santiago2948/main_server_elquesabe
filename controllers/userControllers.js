@@ -83,7 +83,7 @@ exports.viewProfile=(req,res,next)=>{
         FreelancerDAO.fetchById(req.body.id,(result)=>{
             res.json(result);
         });
-    }else{
+    }else if(parseInt(req.body.usertype)===2){
         ClientDAO.fetchById(req.body.id,(result)=>{
             res.json(result);
         });
@@ -91,41 +91,31 @@ exports.viewProfile=(req,res,next)=>{
 };
 
 exports.editProfile = (req, res, next) => {
-    let photoLink = "";
-    let curriculumLink = "";
-    let rutLink = "";
-    let epsLink = "";
 
-    try {
-        if (req.files) {
-            if (req.files.photo) {
-                photoLink = req.files.photo[0].path;
+    if(parseInt(req.body.usertype)===1){
+        let photoLink = "";
+        let curriculumLink = "";
+        let rutLink = "";
+        let epsLink = "";
+
+        try {
+            if (req.files) {
+                if (req.files.photo) {
+                    photoLink = req.files.photo[0].path;
+                }
+                if (req.files.curriculum) {
+                    curriculumLink = req.files.curriculum[0].path;
+                }
+                if (req.files.rut) {
+                    rutLink = req.files.rut[0].path;
+                }
+                if (req.files.eps) {
+                    epsLink = req.files.eps[0].path;
+                }
             }
-            if (req.files.curriculum) {
-                curriculumLink = req.files.curriculum[0].path;
-            }
-            if (req.files.rut) {
-                rutLink = req.files.rut[0].path;
-            }
-            if (req.files.eps) {
-                epsLink = req.files.eps[0].path;
-            }
+        } catch (error) {
+            console.error(error);
         }
-    } catch (error) {}
-
-
-    console.log(
-        [{id: req.body.id},
-        {name: req.body.name},
-        {email: req.body.email},
-        {description: req.body.description},
-        {cellphone: req.body.cellphone},
-        {importantInfo: req.body.importantInfo},
-        {profilePhoto: photoLink},
-        {curriculum: curriculumLink},
-        {rut: rutLink},
-        {eps: epsLink}]);
-    if (parseInt(req.body.usertype) === 1) {
         FreelancerDAO.updateById({
             id: req.body.id,
             name: req.body.name,
@@ -133,11 +123,35 @@ exports.editProfile = (req, res, next) => {
             description: req.body.description,
             cellphone: req.body.cellphone,
             importantInfo: req.body.importantInfo,
+            password: req.body.password,
             profilePhoto: photoLink,
             curriculum: curriculumLink,
             rut: rutLink,
             eps: epsLink,
         });
+    }else if(parseInt(req.body.usertype)===2){
+        let photoLink = "";
+
+        try {
+            if (req.files) {
+                if (req.files.photo) {
+                    photoLink = req.files.photo[0].path;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+        ClientDAO.updateById({
+            id: req.body.id,
+            name: req.body.name,
+            email: req.body.email,
+            description: req.body.description,
+            cellphone: req.body.cellphone,
+            adress: req.body.adress,
+            password: req.body.password,
+            profilePhoto: photoLink,
+        })
     }
     res.json({ response: true });
 };

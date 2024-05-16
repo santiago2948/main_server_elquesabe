@@ -102,16 +102,92 @@ class ClientDAO {
       "select name, cellphone, adress, email, description, profilePhoto from client where idClient=?";
     try {
       const response = await mysqlExecute(sql, [id]);
-      response.map((e) => {
-        if (e.profilePhoto) {
-          let photo = e.profilePhoto.toString("base64");
-          e["profilePhoto"] = photo;
-        }
-      });
-      let user = response[0];
+      const user = response[0];
+
+      // Convertir blobs a URLs de datos base64 si existen
+      if (user.profilePhoto) {
+        user.profilePhoto = user.profilePhoto.toString("base64");
+      };
+
       cb(user);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  static async updateById(formData) {
+    let {
+        id,
+        name,
+        description,
+        cellphone,
+        adress,
+        email,
+        profilePhoto,
+        password,
+    } = formData;
+
+    let fileContents = {};
+    
+    // Verificar y procesar los archivos adjuntos
+    if (profilePhoto) {
+        fileContents.profilePhoto = await sharp(profilePhoto)
+            .resize({ width: 800 })
+            .jpeg({ quality: 80 })
+            .toBuffer();
+    }
+
+    // Consulta SQL para actualizar el perfil
+    let sql = `UPDATE client SET
+                name = ?,
+                description = ?,
+                cellphone = ?,
+                adress = ?,
+                email = ?`;
+
+    const params = [
+        name,
+        description,
+        cellphone,
+        adress,
+        email
+    ];
+
+    if (profilePhoto) {
+        sql += ", profilePhoto = ?";
+        params.push(fileContents.profilePhoto);
+    }
+
+
+    sql += " WHERE idClient = ?";
+
+    params.push(id);
+
+    try {
+        // Ejecutar la consulta SQL
+        await mysqlExecute(sql, params);
+
+        // Eliminar archivos temporales
+        if (profilePhoto) {
+            fs.unlink(profilePhoto, (error) => {
+                if (error) {
+                    console.error("Error deleting profile photo file:", error);
+                } else {
+                    console.log("Profile photo file deleted successfully.");
+                }
+            });
+        }
+
+        // Actualización de la contraseña si es necesario
+        if (password) {
+            const hashedPassword = hashPassword(password);
+            sql = "UPDATE freelancer SET password = ? WHERE idClient = ?";
+            await mysqlExecute(sql, [hashedPassword, id]);
+        }
+
+        console.log("Perfil actualizado correctamente.");
+    } catch (error) {
+        console.error("Error al actualizar el perfil:", error);
     }
   }
 
